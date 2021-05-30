@@ -1,5 +1,10 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:weather_for_runners/repository/settings_repository.dart';
+import 'package:weather_for_runners/repository/visual_crossing_weather_provider.dart';
+import 'package:weather_for_runners/repository/yandex_weather_provider.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key, required this.settingsRepository}) : super(key: key);
@@ -29,8 +34,17 @@ class _SettingsPageState extends State<SettingsPage> {
         child: Column(
           children: [
             const Text('Weather API provider'),
-            RadioListTile(value: 'Yandex', groupValue: widget.settingsRepository.remoteServerName, onChanged: _changeServer),
-            RadioListTile(value: 'VisualCrossing', groupValue: widget.settingsRepository.remoteServerName, onChanged: _changeServer)
+            RadioListTile(
+              value: YandexWeatherProvider.providerName,
+              groupValue: widget.settingsRepository.remoteServerName,
+              onChanged: _changeServer,
+              title: const Text(YandexWeatherProvider.providerName),
+            ),
+            RadioListTile(
+                value: VisualCrossingWeatherProvider.providerName,
+                groupValue: widget.settingsRepository.remoteServerName,
+                onChanged: _changeServer,
+                title: const Text(VisualCrossingWeatherProvider.providerName))
           ],
         ),
       ),

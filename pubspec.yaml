@@ -34,6 +34,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  geolocator: ^7.0.3
   http: ^0.13.3
   import_sorter: ^4.4.3
   pedantic: ^1.11.0

@@ -1,7 +1,9 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:weather_for_runners/repository/settings_repository.dart';
 import 'package:weather_for_runners/settings_page.dart';
-
 import 'home_page.dart';
 
 void main() async {
@@ -23,12 +25,12 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: HomePage(),
+        home: HomePage(settingsRepository: settingsRepository),
         onGenerateRoute: (routeSettings) {
           Route<dynamic>? result;
           switch (routeSettings.name) {
             case '/':
-              result = MaterialPageRoute(settings: routeSettings, builder: (context) => HomePage());
+              result = MaterialPageRoute(settings: routeSettings, builder: (context) => HomePage(settingsRepository: settingsRepository));
               break;
             case SettingsPage.routeName:
               result = MaterialPageRoute(settings: routeSettings, builder: (context) => SettingsPage(settingsRepository: settingsRepository));

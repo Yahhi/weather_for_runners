@@ -1,4 +1,8 @@
+// Package imports:
 import 'package:shared_preferences/shared_preferences.dart';
+
+// Project imports:
+import 'package:weather_for_runners/repository/visual_crossing_weather_provider.dart';
 
 class SettingsRepository {
   SettingsRepository() {
@@ -12,7 +16,7 @@ class SettingsRepository {
   late Future<bool> loaded;
 
   String? _remoteServerName;
-  String get remoteServerName => _remoteServerName ?? 'VisualCrossing';
+  String get remoteServerName => _remoteServerName ?? VisualCrossingWeatherProvider.providerName;
   set remoteServerName(String value) {
     _remoteServerName = value;
     _prefs.setString(_serverNameKey, value);
