@@ -1,8 +1,12 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 // Project imports:
 import 'package:weather_for_runners/repository/settings_repository.dart';
+import 'package:weather_for_runners/repository/visual_crossing_weather_provider.dart';
+import 'package:weather_for_runners/repository/weather_provider.dart';
+import 'package:weather_for_runners/repository/yandex_weather_provider.dart';
 import 'package:weather_for_runners/settings_page.dart';
 import 'home_page.dart';
 
@@ -10,13 +14,15 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final settings = SettingsRepository();
   await settings.loaded;
-  runApp(MyApp(settingsRepository: settings));
+  GetIt.instance.registerSingleton(settings);
+  GetIt.instance.registerSingleton<WeatherProvider>(settings.remoteServerName == YandexWeatherProvider.providerName ? YandexWeatherProvider() : VisualCrossingWeatherProvider());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key, required this.settingsRepository}) : super(key: key);
-
-  final SettingsRepository settingsRepository;
+  const MyApp({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,15 +31,15 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: HomePage(settingsRepository: settingsRepository),
+        home: HomePage(),
         onGenerateRoute: (routeSettings) {
           Route<dynamic>? result;
           switch (routeSettings.name) {
             case '/':
-              result = MaterialPageRoute(settings: routeSettings, builder: (context) => HomePage(settingsRepository: settingsRepository));
+              result = MaterialPageRoute(settings: routeSettings, builder: (context) => HomePage());
               break;
             case SettingsPage.routeName:
-              result = MaterialPageRoute(settings: routeSettings, builder: (context) => SettingsPage(settingsRepository: settingsRepository));
+              result = MaterialPageRoute(settings: routeSettings, builder: (context) => SettingsPage());
               break;
           }
           return result;

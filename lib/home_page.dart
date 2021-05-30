@@ -3,19 +3,17 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:geolocator/geolocator.dart';
+import 'package:get_it/get_it.dart';
 
 // Project imports:
 import 'package:weather_for_runners/model/weather_condition.dart';
 import 'package:weather_for_runners/repository/settings_repository.dart';
-import 'package:weather_for_runners/repository/visual_crossing_weather_provider.dart';
-import 'package:weather_for_runners/repository/yandex_weather_provider.dart';
+import 'package:weather_for_runners/repository/weather_provider.dart';
 import 'package:weather_for_runners/settings_page.dart';
 import 'services/ext_date_time.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key, required this.settingsRepository}) : super(key: key);
-
-  final SettingsRepository settingsRepository;
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -23,6 +21,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   WeatherCondition? currentWeather;
+
+  SettingsRepository get settingsRepository => GetIt.instance.get<SettingsRepository>();
+  WeatherProvider get weatherProvider => GetIt.instance.get<WeatherProvider>();
 
   @override
   void initState() {
@@ -32,12 +33,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _loadWeather() async {
     final position = await Geolocator.getLastKnownPosition();
-    final Map<DateTime, WeatherCondition> predictions;
-    if (widget.settingsRepository.remoteServerName == YandexWeatherProvider.providerName) {
-      predictions = await YandexWeatherProvider().loadPredictions(position?.latitude ?? 0.0, position?.longitude ?? 0.0);
-    } else {
-      predictions = await VisualCrossingWeatherProvider().loadPredictions(position?.latitude ?? 0.0, position?.longitude ?? 0.0);
-    }
+    final predictions = await weatherProvider.loadPredictions(position?.latitude ?? 0.0, position?.longitude ?? 0.0);
     currentWeather = predictions[DateTime.now().hourStart];
     setState(() {});
   }

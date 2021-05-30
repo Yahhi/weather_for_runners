@@ -1,17 +1,17 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 // Project imports:
 import 'package:weather_for_runners/repository/settings_repository.dart';
 import 'package:weather_for_runners/repository/visual_crossing_weather_provider.dart';
+import 'package:weather_for_runners/repository/weather_provider.dart';
 import 'package:weather_for_runners/repository/yandex_weather_provider.dart';
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({Key? key, required this.settingsRepository}) : super(key: key);
+  const SettingsPage({Key? key}) : super(key: key);
 
   static const routeName = '/settings';
-
-  final SettingsRepository settingsRepository;
 
   @override
   State<StatefulWidget> createState() {
@@ -20,9 +20,13 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  SettingsRepository get settingsRepository => GetIt.instance.get<SettingsRepository>();
+
   void _changeServer(String? value) {
     if (value == null) return;
-    widget.settingsRepository.remoteServerName = value;
+    settingsRepository.remoteServerName = value;
+    GetIt.instance.unregister<WeatherProvider>();
+    GetIt.instance.registerSingleton<WeatherProvider>(value == YandexWeatherProvider.providerName ? YandexWeatherProvider() : VisualCrossingWeatherProvider());
     setState(() {});
   }
 
@@ -36,13 +40,13 @@ class _SettingsPageState extends State<SettingsPage> {
             const Text('Weather API provider'),
             RadioListTile(
               value: YandexWeatherProvider.providerName,
-              groupValue: widget.settingsRepository.remoteServerName,
+              groupValue: settingsRepository.remoteServerName,
               onChanged: _changeServer,
               title: const Text(YandexWeatherProvider.providerName),
             ),
             RadioListTile(
                 value: VisualCrossingWeatherProvider.providerName,
-                groupValue: widget.settingsRepository.remoteServerName,
+                groupValue: settingsRepository.remoteServerName,
                 onChanged: _changeServer,
                 title: const Text(VisualCrossingWeatherProvider.providerName))
           ],
