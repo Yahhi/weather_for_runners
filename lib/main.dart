@@ -31,15 +31,15 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: HomePage(),
+        home: const HomePage(),
         onGenerateRoute: (routeSettings) {
           Route<dynamic>? result;
           switch (routeSettings.name) {
             case '/':
-              result = MaterialPageRoute(settings: routeSettings, builder: (context) => HomePage());
+              result = MaterialPageRoute(settings: routeSettings, builder: (context) => const HomePage());
               break;
             case SettingsPage.routeName:
-              result = MaterialPageRoute(settings: routeSettings, builder: (context) => SettingsPage());
+              result = MaterialPageRoute(settings: routeSettings, builder: (context) => const SettingsPage());
               break;
           }
           return result;
