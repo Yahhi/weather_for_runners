@@ -18,7 +18,7 @@ class YandexWeatherProvider extends WeatherProvider {
     print(url);
     final response = await http.get(url, headers: {'X-Yandex-API-Key': _apiKey});
     if (response.statusCode == 200) {
-      var jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
+      final jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
       final dates = jsonResponse['forecasts'] as List<dynamic>;
       final result = <DateTime, WeatherCondition>{};
       for (var date in dates) {

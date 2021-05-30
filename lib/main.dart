@@ -6,7 +6,7 @@ import 'package:weather_for_runners/repository/settings_repository.dart';
 import 'package:weather_for_runners/settings_page.dart';
 import 'home_page.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final settings = SettingsRepository();
   await settings.loaded;
