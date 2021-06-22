@@ -13,7 +13,7 @@ class VisualCrossingWeatherProvider extends WeatherProvider {
   static const _apiKey = 'fb33efb33cmsh681aecaeeeb8001p142a0djsn5535a7f05e6d';
 
   @override
-  Future<Map<DateTime, WeatherCondition>> loadPredictions(double latitude, double longitude) async {
+  Future<Map<DateTime, WeatherCondition>> loadPredictions(double? latitude, double? longitude) async {
     final url = Uri.https('visual-crossing-weather.p.rapidapi.com', '/forecast', {'location': '$latitude,$longitude', 'aggregateHours': '1', 'unitGroup': 'metric', 'contentType': 'json'});
     final response = await http.get(url, headers: {'X-RapidAPI-Key': _apiKey, 'x-rapidapi-host': 'visual-crossing-weather.p.rapidapi.com', 'useQueryString': 'true'});
     if (response.statusCode == 200) {

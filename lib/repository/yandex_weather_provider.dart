@@ -13,7 +13,7 @@ class YandexWeatherProvider extends WeatherProvider {
   static const _apiKey = '92071834-c1b4-4fcc-8705-6242ee383094';
 
   @override
-  Future<Map<DateTime, WeatherCondition>> loadPredictions(double latitude, double longitude) async {
+  Future<Map<DateTime, WeatherCondition>> loadPredictions(double? latitude, double? longitude) async {
     final url = Uri.https('api.weather.yandex.ru', '/v2/forecast', {'lat': latitude.toString(), 'lon': longitude.toString()});
     print(url);
     final response = await http.get(url, headers: {'X-Yandex-API-Key': _apiKey});

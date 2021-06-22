@@ -1,5 +1,8 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
 
 // Project imports:
@@ -14,7 +17,13 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final settings = SettingsRepository();
   await settings.loaded;
+  final geolocator = GeolocatorPlatform.instance;
   GetIt.instance.registerSingleton(settings);
+  GetIt.instance.registerSingleton<GeolocatorPlatform>(geolocator);
+  final position = await geolocator.getLastKnownPosition();
+  if (position != null) {
+    GetIt.instance.registerSingleton<Position>(position); //позицию можно было бы получать и из настроек пользователя
+  }
   GetIt.instance.registerSingleton<WeatherProvider>(settings.remoteServerName == YandexWeatherProvider.providerName ? YandexWeatherProvider() : VisualCrossingWeatherProvider());
   runApp(const MyApp());
 }

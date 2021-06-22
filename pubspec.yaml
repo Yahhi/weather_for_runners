@@ -37,7 +37,7 @@ dev_dependencies:
     sdk: flutter
   import_sorter: ^4.4.3
   pedantic: ^1.11.0
-
+  mockito: ^5.0.10
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
